@@ -27,7 +27,7 @@
 
 - name: Read URL list for the system architecture
   ansible.builtin.slurp:
-    src: "/root/kubernetes-the-hard-way/downloads-{{ ansible_architecture }}.txt"
+    src: "/root/kubernetes-the-hard-way/downloads-{{ cpu_architecture }}.txt"
   register: url_list_file
 
 - name: Set URL list as variable
