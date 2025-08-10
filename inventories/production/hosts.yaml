@@ -1,7 +1,9 @@
-all:
-  jump:
+jump:
+  hosts:
     jumpbox.local.com:
-  cluster:
+
+cluster:
+  hosts:
     server.local.com:
     node-0.local.com:
     node-1.local.com:
