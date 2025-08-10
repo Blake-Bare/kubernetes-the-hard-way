@@ -1,7 +1,7 @@
 all:
-  control:
-    lab-control-general-1.local.com:
-    lab-control-general-2.local.com:
-    lab-control-general-3.local.com:
-  agents:
-    lab-agent-1.local.com:
+  jump:
+    jumpbox.local.com:
+  cluster:
+    server.local.com:
+    node-0.local.com:
+    node-1.local.com:

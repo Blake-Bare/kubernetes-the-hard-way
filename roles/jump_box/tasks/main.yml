@@ -1,0 +1,16 @@
+---
+- name: Ensure APT package index is up to date
+  ansible.builtin:
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install required packages
+  ansible.builtin:
+    name:
+      - wget
+      - curl
+      - vim
+      - openssl
+      - git
+    state: present

@@ -1,4 +1,10 @@
-- hosts: all
+---
+- hosts: jump
   become: yes
   roles:
-    - automation_user
+    - jump_box
+
+- hosts: cluster
+  become: yes
+  roles:
+    - cluster
