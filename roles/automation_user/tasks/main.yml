@@ -8,7 +8,7 @@
 - name: Add authorized key
   ansible.posix.authorized_key:
     user: "{{ automation_user_name }}"
-    key: "{{ automation_pubkey }}"
+    key: "{{ ssh_pub_key }}"
     state: present
 
 - name: Grant passwordless sudo

@@ -1,2 +1,1 @@
 automation_user_name: automation
-automation_pubkey: "{{ ssh_pub_key }}"
