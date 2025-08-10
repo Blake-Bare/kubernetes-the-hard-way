@@ -1,0 +1,5 @@
+all:
+  hosts:
+    lab-control-general-1.local.com:
+    lab-control-general-2.local.com:
+    lab-control-general-3.local.com:

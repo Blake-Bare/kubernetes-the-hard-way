@@ -1,0 +1,20 @@
+- name: Create automation user
+  ansible.builtin.user:
+    name: "{{ automation_user_name }}"
+    shell: /bin/bash
+    create_home: yes
+    state: present
+
+- name: Add authorized key
+  ansible.posix.authorized_key:
+    user: "{{ automation_user_name }}"
+    key: "{{ automation_pubkey }}"
+    state: present
+
+- name: Grant passwordless sudo
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/90-{{ automation_user_name }}"
+    content: "{{ automation_user_name }} ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: '0440'
