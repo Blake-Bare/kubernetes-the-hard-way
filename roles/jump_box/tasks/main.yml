@@ -17,7 +17,7 @@
   ansible.builtin.git:
     repo: https://github.com/kelseyhightower/kubernetes-the-hard-way.git
     depth: 1
-    dest: /root
+    dest: /root/
     version: master
 
 - name: create downloads directory if not exists
