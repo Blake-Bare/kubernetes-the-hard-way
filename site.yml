@@ -4,7 +4,7 @@
   roles:
     - jump_box
 
-- hosts: cluster
-  become: yes
-  roles:
-    - cluster
+# - hosts: cluster
+#   become: yes
+#   roles:
+#     - cluster
