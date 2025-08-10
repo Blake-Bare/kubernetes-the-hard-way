@@ -12,3 +12,66 @@
       - openssl
       - git
     state: present
+
+- name: clone kubernetes-the-hard-way repository
+  ansible.builtin.git:
+    repo: https://github.com/kelseyhightower/kubernetes-the-hard-way.git
+    depth: 1
+    version: master
+
+- name: create downloads directory if not exists
+  ansible.builtin.file:
+    path: /root/kubernetes-the-hard-way/downloads
+    state: directory
+
+- name: Read URL list for the system architecture
+  ansible.builtin.slurp:
+    src: "downloads-{{ ansible_architecture }}.txt"
+  register: url_list_file
+
+- name: Set URL list as variable
+  ansible.builtin.set_fact:
+    url_list: "{{ url_list_file.content | b64decode | splitlines() }}"
+
+- name: wget bins 
+  ansible.builtin.get_url:
+    url: "{{ item }}"
+    dest: "{{ bin_dir }}"
+  with_items: "{{ url_list }}"
+
+- name: Ensure downloads subdirectories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ bin_dir }}/client"
+    - "{{ bin_dir }}/cni-plugins"
+    - "{{ bin_dir }}/controller"
+    - "{{ bin_dir }}/worker"
+
+- name: Extract all required archives with tar via shell
+  ansible.builtin.shell: |
+    ARCH=$(dpkg --print-architecture)
+    tar -xvf {{ bin_dir }}/crictl-v1.32.0-linux-${ARCH}.tar.gz -C {{ bin_dir }}/worker/
+    tar -xvf {{ bin_dir }}/containerd-2.1.0-beta.0-linux-${ARCH}.tar.gz --strip-components 1 -C {{ bin_dir }}/worker/
+    tar -xvf {{ bin_dir }}/cni-plugins-linux-${ARCH}-v1.6.2.tgz -C {{ bin_dir }}/cni-plugins/
+    tar -xvf {{ bin_dir }}/etcd-v3.6.0-rc.3-linux-${ARCH}.tar.gz -C {{ bin_dir }} --strip-components 1 etcd-v3.6.0-rc.3-linux-${ARCH}/etcdctl etcd-v3.6.0-rc.3-linux-${ARCH}/etcd
+  args:
+    executable: /bin/bash
+  register: extract_result
+
+- name: Make binaries in downloads subdirectories executable
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: "0755"
+  with_fileglob:
+    - "{{ bin_dir }}/client/*"
+    - "{{ bin_dir }}/controller/*"
+    - "{{ bin_dir }}/worker/*"
+    - "{{ bin_dir }}/cni-plugins/*"
+
+- name: mv kubectl to /usr/local/bin/
+  ansible.builtin.copy:
+    src: "{{ bin_dir }}/client/kubectl"
+    dest: /usr/local/bin/kubectl
+    remote_src: yes
