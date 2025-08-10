@@ -1,7 +1,5 @@
----
 - name: Ensure APT package index is up to date
-  ansible.builtin:
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
 
