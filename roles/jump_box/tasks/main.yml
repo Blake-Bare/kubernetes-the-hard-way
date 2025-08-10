@@ -32,7 +32,7 @@
 
 - name: Set URL list as variable
   ansible.builtin.set_fact:
-    url_list: "{{ url_list_file.content | b64decode | splitlines() }}"
+    url_list: "{{ url_list_file.content | b64decode | split('\n') }}"
 
 - name: wget bins 
   ansible.builtin.get_url:
