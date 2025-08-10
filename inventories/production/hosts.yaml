@@ -1,5 +1,7 @@
 all:
-  hosts:
+  control:
     lab-control-general-1.local.com:
     lab-control-general-2.local.com:
     lab-control-general-3.local.com:
+  agents:
+    lab-agent-1.local.com:
