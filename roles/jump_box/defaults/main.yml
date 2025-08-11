@@ -1,2 +1,2 @@
 cpu_architecture: amd64
-bin_dir: /root/kubernetes-the-hard-way/downloads/
+bin_dir: /root/kubernetes-the-hard-way/downloads
