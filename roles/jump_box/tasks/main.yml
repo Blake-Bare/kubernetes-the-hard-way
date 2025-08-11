@@ -32,7 +32,7 @@
 
 - name: Set URL list as variable
   ansible.builtin.set_fact:
-    url_list: "{{ url_list_file.content | b64decode | split('\n') }}"
+    url_list: "{{ url_list_file.content | b64decode | split('\n') | reject('equalto', '') | list }}"
 
 - name: wget bins 
   ansible.builtin.get_url:
@@ -64,7 +64,6 @@
 - name: Make binaries in downloads subdirectories executable
   ansible.builtin.file:
     path: "{{ item }}"
-    mode: "0755"
   with_fileglob:
     - "{{ bin_dir }}/client/*"
     - "{{ bin_dir }}/controller/*"
