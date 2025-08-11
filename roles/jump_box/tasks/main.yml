@@ -61,6 +61,17 @@
     executable: /bin/bash
   register: extract_result
 
+- name: move downloaded binaries into directories
+  ansible.builtin.shell: |
+    ARCH=$(dpkg --print-architecture)
+    mv {{ bin_dir }}/etcdctl {{ bin_dir }}/kubectl {{ bin_dir }}/client/
+    mv {{ bin_dir }}/etcd {{ bin_dir }}/kube-apiserver {{ bin_dir }}/kube-controller-manager {{ bin_dir }}/kube-scheduler {{ bin_dir }}/controller/
+    mv {{ bin_dir }}/kubelet {{ bin_dir }}/kube-proxy {{ bin_dir }}/worker/
+    mv {{ bin_dir }}/runc.${ARCH} {{ bin_dir }}/worker/runc
+  args:
+    chdir: "{{ ansible_env.PWD }}"
+  when: extract_result is changed
+
 - name: Make binaries in downloads subdirectories executable
   ansible.builtin.file:
     path: "{{ item }}"
