@@ -75,6 +75,7 @@
 - name: Make binaries in downloads subdirectories executable
   ansible.builtin.file:
     path: "{{ item }}"
+    mode: '0755'
   with_fileglob:
     - "{{ bin_dir }}/client/*"
     - "{{ bin_dir }}/controller/*"
